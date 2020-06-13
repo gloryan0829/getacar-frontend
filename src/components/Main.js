@@ -163,7 +163,9 @@ const Main = () => {
                       className="pointer"
                       key={brandCode}
                       href={brandCode}
-                      onClick={() => brandClicked(brandCode, brandName)}
+                      onClick={() => {
+                        brandClicked(brandCode, brandName)
+                      }}
                     >
                       <Row>
                         <Image
@@ -191,9 +193,9 @@ const Main = () => {
                         key={_id}
                         className="pointer"
                         href={etcInfo.orgId}
-                        onClick={() =>
-                          modelClicked(etcInfo.orgId, title, image.exterior)
-                        }
+                        onClick={(e) => {
+                          modelClicked(etcInfo.orgId, title, image.exterior);
+                        }}
                       >
                         {title}
                       </ListGroup.Item>
@@ -273,7 +275,9 @@ const Main = () => {
                         <ListGroup.Item
                           key={grade.id}
                           href={index + 1}
-                          onClick={() => gradeClicked(gradeName, index)}
+                          onClick={() => {
+                            gradeClicked(gradeName, index);
+                          }}
                         >
                           {grade.name} {grade.displacement} {grade.price}
                         </ListGroup.Item>
@@ -373,7 +377,9 @@ const Main = () => {
               <Button
                 variant="primary"
                 style={{ width: "100%" }}
-                onClick={onSave}
+                onClick={() => {
+                  onSave();
+                }}
               >
                 견적 신청
               </Button>

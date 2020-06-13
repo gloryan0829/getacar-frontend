@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import { confirmedEstimate, getEstimateOne } from '../helpers/apiList';
+import { useAppDispatch } from './contexts/AppContext';
 
 const initState = {
   requestMemo: "",
@@ -23,6 +24,7 @@ const initState = {
 };
 
 const Estimate = ({ match: { params: { id } } }) => {
+  const dispatch = useAppDispatch();
   const [requestInfo, setRequestInfo] = useState(initState);
   useEffect(() => {
       onFetchData();
@@ -87,20 +89,23 @@ const Estimate = ({ match: { params: { id } } }) => {
   );
 
   function onFetchData() {
-      getEstimateOne(id)
+    dispatch({type:'LOADING', loading:true});
+    getEstimateOne(id)
           .then(({ data: { success, data:request } }) => (success && request) || [] )
-          .then(requestEstimate => requestEstimate.length && setRequestInfo(requestEstimate[0]));
+          .then(requestEstimate => requestEstimate.length && setRequestInfo(requestEstimate[0]))
+          .finally(() => dispatch({type:'LOADING', loading:false}));
   }
 
   function onConfirmed() {
+    dispatch({type:'LOADING', loading:true});
     confirmedEstimate(id)
         .then(({ data: { success,data } }) => {
           if(success) {
-            console.log(data);
             alert('돈벌러 가즈아');
             onFetchData()
           }
         })
+        .finally(() => dispatch({type:'LOADING', loading:false}));
   }
 };
 
