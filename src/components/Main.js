@@ -391,18 +391,23 @@ const Main = () => {
   }
 
   function getModelList(brandCode) {
+    dispatch({type: 'LOADING', loading: true});
     getModelListApi(brandCode)
       .then(({ data: { success, data } }) => success && setModelList(data))
-      .catch(err => console.log(`getModelList err :`, err));
+      .catch(err => console.log(`getModelList err :`, err))
+      .finally(() => dispatch({type: 'LOADING', loading: false}));
   }
 
   function getModelOne(modelCode) {
+    dispatch({type: 'LOADING', loading: true});
     getModelOneApi(modelCode)
       .then(({ data: { success, data } }) => success && setCarInfo(data))
-      .catch(err => console.log(`getModelOne err :`, err));
+      .catch(err => console.log(`getModelOne err :`, err))
+        .finally(() => dispatch({type: 'LOADING', loading: false}));
   }
 
   function saveEstimate(info) {
+    dispatch({type: 'LOADING', loading: true});
     return saveRequestEstimate(info).then(({ data: { message, success } }) => {
       if (success) {
         alert("견적 신청이 완료 되었습니다.\n 바로 연락드리겠습니다.");
@@ -410,7 +415,7 @@ const Main = () => {
       } else {
         alert("잠시 서버에 문제가 있습니다.\n 다시 시도 부탁드립니다.");
       }
-    });
+    }).finally(() => dispatch({type: 'LOADING', loading: false}));
   }
 };
 
